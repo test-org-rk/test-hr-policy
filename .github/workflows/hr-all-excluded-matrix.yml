@@ -1,0 +1,14 @@
+name: hr-all-exclude-matrix
+on: [push, workflow_dispatch]
+jobs:
+  excluded-static:
+    runs-on: [self-hosted, custom-runner-123]
+    steps: [{uses: actions/checkout@v4}]
+
+  excluded-dynamic:
+    runs-on: custom-runner-${{ github.run_id }}
+    steps: [{uses: actions/checkout@v4}]
+
+  excluded-case:
+    runs-on: Custom-Runner-ABC
+    steps: [{uses: actions/checkout@v4}]
