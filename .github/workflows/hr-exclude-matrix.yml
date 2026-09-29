@@ -1,0 +1,24 @@
+name: hr-exclude-matrix
+on: [push, workflow_dispatch]
+jobs:
+  control-hosted:              # must be FLAGGED
+    runs-on: ubuntu-latest
+    steps: [{uses: actions/checkout@v4}]
+
+  excluded-static:             # must be SKIPPED
+    runs-on: [self-hosted, custom-runner-123]
+    steps: [{uses: actions/checkout@v4}]
+
+  excluded-dynamic:            # must be SKIPPED, the originating case
+    runs-on: custom-runner-${{ github.run_id }}
+    steps: [{uses: actions/checkout@v4}]
+
+  excluded-case:               # must be SKIPPED, case folding
+    runs-on: Custom-Runner-ABC
+    steps: [{uses: actions/checkout@v4}]
+
+  compliant-hosted:            # matched, but no violation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: step-security/harden-runner@v2
+      - uses: actions/checkout@v4
